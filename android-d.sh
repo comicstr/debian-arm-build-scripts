@@ -114,7 +114,6 @@ apt-get clean
 rm -f /root/.bash*
 rm -f /root/build.sh
 rm -f /root/clean.sh
-rm -f /usr/bin/qemu*
 EOF
 
 chmod +x $name/root/clean.sh
