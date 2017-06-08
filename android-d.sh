@@ -132,3 +132,4 @@ mkfs.$4 $name.$4.img
 mount -o loop $name.$4.img /mnt
 rm -rf /mnt/* && cp -ar $name/* /mnt
 umount -l /mnt
+rm -rf $name
