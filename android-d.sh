@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ $(id -u) -ne 0 ]; then
+	echo "请以 root 用户运行 $0"
+	exit 0
+fi
 if [ $# -eq 0 ]; then
 	echo "请输入信息，e.g. $0 armel debian jessie ext3"
 	exit 0
@@ -89,6 +93,8 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US:en
 export TERM=linux
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+mount proc /proc -t proc
+mount sysfs /sys -t sysfs
 echo "Welcome to Debian 8 jessie on Android!"
 echo "Create by linxan at $date"
 cat /etc/motd
@@ -102,7 +108,6 @@ cat << EOF > $name/root/build.sh
 #!/bin/sh
 apt-get update
 apt-get -y install $packages
-apt-get -y dist-upgrade
 EOF
 
 chmod +x $name/root/build.sh
@@ -118,6 +123,8 @@ EOF
 
 chmod +x $name/root/clean.sh
 LANG=C chroot $name /root/clean.sh
+
+rm -f $name/usr/bin/qemu-arm-static
 
 # 第四阶段
 dd if=/dev/zero of=${basedir}/$name.$4.img bs=512M count=4
