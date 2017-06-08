@@ -6,7 +6,7 @@
 ## 如何使用？
 这很简单。
 
-尼需要保证安装 `debootstrap qemu-user-static`
+尼需要保证安装 `debootstrap` `qemu-user-static`
 ```
 $ sudo apt-get install debootstrap qemu-user-static
 ```
@@ -32,7 +32,12 @@ $ sudo sh android-d.sh arm64 debian sid ext4
 
 以 chroot 为例，这需要 root。
 
-尼阔以将构建的如 `jessie-root.ext3.img` 放置于 `/sdcard`。
+尼阔以将构建的如 `jessie-root.ext3.img` 放置于 `/sdcard`
+在 `/data` 创建一个新的目录
+```
+# mkdir /data/debian
+```
+好戏开始
 ```
 # busybox mount -o loop /sdcard/jessie-root.ext3.img /data/debian
 # busybox chroot /data/debian /root/init.sh
