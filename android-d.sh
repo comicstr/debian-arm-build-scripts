@@ -1,12 +1,12 @@
 #!/bin/sh
 
 if [ $(id -u) -ne 0 ]; then
-	echo "请以 root 用户运行 $0"
-	exit 0
+    echo "请以 root 用户运行 $0"
+    exit 0
 fi
 if [ $# -eq 0 ]; then
-	echo "请输入信息，e.g. $0 armel debian jessie ext3"
-	exit 0
+    echo "请输入信息，e.g. $0 armel debian jessie ext3"
+    exit 0
 fi
 
 # 定义信息
