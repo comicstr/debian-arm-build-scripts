@@ -20,14 +20,25 @@ mirror="ftp.cn.debian.org"
 
 packages="${base} ${service}"
 
-# 第一阶段
+case "$1" in
+arm64)
+    qemu=aarch64
+    ;;
+*)
+    qemu=arm
+    ;;
+esac
+
 export LC_ALL=C
 
+date=$(date "+%b.%d %Y")
+
+# 第一阶段
 mkdir -p ${basedir} && cd ${basedir}
 
 debootstrap --foreign --arch $architecture $3 $name http://$mirror/$2/
 
-cp /usr/bin/qemu-arm-static $name/usr/bin
+cp /usr/bin/qemu-$qemu-static $name/usr/bin
 
 LANG=C chroot $name /debootstrap/debootstrap --second-stage
 
@@ -81,8 +92,6 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 EOF
 
-date=$(date "+%b.%d %Y")
-
 cat << EOF > $name/root/init.sh
 #!/bin/sh
 export SHELL=/bin/zsh
@@ -124,7 +133,7 @@ EOF
 chmod +x $name/root/clean.sh
 LANG=C chroot $name /root/clean.sh
 
-rm -f $name/usr/bin/qemu-arm-static
+rm -f $name/usr/bin/qemu-$qemu-static
 
 # 第四阶段
 dd if=/dev/zero of=${basedir}/$name.$4.img bs=512M count=4
